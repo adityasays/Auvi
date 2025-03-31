@@ -73,11 +73,28 @@ function Contact() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    console.log("Form submitted:", formData);
-    setFormData({ name: "", email: "", message: "" });
-    setIsSubmitting(false);
-    alert("Message sent! (This is a demo - actual submission not implemented yet)");
+
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+
+      const result = await response.json();
+
+      if (response.ok) {
+        setFormData({ name: "", email: "", message: "" });
+        alert("Message sent successfully! ");
+      } else {
+        throw new Error(result.error || "Failed to send message");
+      }
+    } catch (error) {
+      console.error("Error submitting form:", error);
+      alert("Failed to send message. Please try again later.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -191,7 +208,7 @@ function Contact() {
         <p className="text-sm">Made with ❤️ by Aditya Shukla</p>
         <div className="flex justify-center gap-4 mt-2">
           <a
-            href="https://www.linkedin.com/in/adityashukla190503/" 
+            href="https://www.linkedin.com/in/adityashukla190503/"
             target="_blank"
             rel="noopener noreferrer"
             className="text-purple-400 hover:text-purple-300 transition-colors"
@@ -199,7 +216,7 @@ function Contact() {
             <Linkedin className="h-6 w-6" />
           </a>
           <a
-            href="https://github.com/adityasays" 
+            href="https://github.com/adityasays"
             target="_blank"
             rel="noopener noreferrer"
             className="text-purple-400 hover:text-purple-300 transition-colors"

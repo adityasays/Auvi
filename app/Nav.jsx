@@ -29,12 +29,12 @@ function Nav() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           <div className="flex items-center">
-            <div className="flex-shrink-0 flex items-center">
+            <Link href="/" className="flex-shrink-0 flex items-center">
               <Sparkles className="h-8 w-8 text-purple-500" />
               <span className="ml-2 text-xl font-bold bg-gradient-to-r from-purple-500 via-pink-500 to-orange-500 text-transparent bg-clip-text">
                 AUVI
               </span>
-            </div>
+            </Link>
           </div>
 
           <div className="hidden md:block">
