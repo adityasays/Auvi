@@ -22,8 +22,8 @@ export default function RootLayout({ children }) {
         <body
           className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         >
-          <TitleUpdater /> <SpeedInsights/> <Analytics/>
-          <Provider>{children}</Provider>
+          <TitleUpdater />  <Analytics/>
+          <Provider>{children} <SpeedInsights/></Provider>
         </body>
       </html>
     </ClerkProvider>
