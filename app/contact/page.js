@@ -1,14 +1,16 @@
 "use client";
 import React, { useState, useEffect, useRef } from "react";
-import { Sparkles, Video, Music, Zap, Github, Linkedin, ArrowRight } from "lucide-react"; 
+import { Sparkles, Mail, User, MessageSquare, Send, Github, Linkedin } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import Link from "next/link";
-import Nav from "@/app/Nav";
+import Nav from "../Nav";
 
-function Features() {
+function Contact() {
   const [particles, setParticles] = useState([]);
   const containerRef = useRef(null);
+  const [formData, setFormData] = useState({ name: "", email: "", message: "" });
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
+  // Particle generation
   useEffect(() => {
     const newParticles = [];
     for (let i = 0; i < 50; i++) {
@@ -64,6 +66,20 @@ function Features() {
     return () => cancelAnimationFrame(animationFrameId);
   }, []);
 
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+    console.log("Form submitted:", formData);
+    setFormData({ name: "", email: "", message: "" });
+    setIsSubmitting(false);
+    alert("Message sent! (This is a demo - actual submission not implemented yet)");
+  };
+
   return (
     <div
       className="relative w-full min-h-screen bg-gradient-to-b from-gray-900 to-black overflow-hidden flex flex-col items-center px-4 pt-24 pb-16"
@@ -92,7 +108,6 @@ function Features() {
       <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-purple-600 rounded-full opacity-10 filter blur-[80px]"></div>
       <div className="absolute bottom-1/4 right-1/4 w-64 h-64 bg-pink-600 rounded-full opacity-10 filter blur-[80px]"></div>
 
-      {/* Under Development Banner */}
       <div className="w-full bg-gradient-to-r from-orange-500 to-yellow-500 text-white text-center py-2 font-semibold text-lg">
         Still Under Development
       </div>
@@ -100,48 +115,80 @@ function Features() {
       <div className="relative flex items-center justify-center mb-6 md:mb-8 mt-8">
         <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight text-white">
           <span className="bg-gradient-to-r from-purple-500 via-pink-500 to-orange-500 text-transparent bg-clip-text">
-            Discover AUVI’s Magic
+            Get in Touch
           </span>
         </h1>
         <Sparkles className="absolute -top-4 -right-4 h-8 w-8 md:h-10 md:w-10 text-yellow-400 animate-pulse" />
       </div>
 
       <p className="text-lg sm:text-xl md:text-2xl text-center max-w-3xl px-4 text-gray-300 mb-12 leading-relaxed">
-        Unleash your creativity with AUVI! Craft mesmerizing short AI-generated videos, crystal-clear audio, and more—all powered by cutting-edge artificial intelligence. Your ideas, brought to life in moments.
+        Have questions or ideas? Reach out to us! We’d love to hear from you and help bring your vision to life.
       </p>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 max-w-5xl px-4 w-full">
-        <FeatureCard
-          icon={<Video className="h-10 w-10 text-pink-400" />}
-          title="Short AI Videos"
-          description="Create captivating short videos with AI, tailored to your vision, in just a few clicks."
-        />
-        <FeatureCard
-          icon={<Music className="h-10 w-10 text-purple-400" />}
-          title="AI Audio Magic"
-          description="Generate studio-quality audio tracks effortlessly, perfect for any project."
-        />
-        <FeatureCard
-          icon={<Zap className="h-10 w-10 text-orange-400" />}
-          title="Instant Results"
-          description="Turn your ideas into reality at lightning speed with AUVI’s powerful AI tools."
-        />
-      </div>
-
-      <Link href="/dashboard">
-        <Button className="mt-12 group bg-gradient-to-r from-purple-600 to-pink-600 text-white font-bold py-4 px-8 rounded-lg transition-all duration-300 hover:shadow-lg shadow-purple-500/20 flex items-center justify-center overflow-hidden relative">
+      <form
+        onSubmit={handleSubmit}
+        className="w-full max-w-lg bg-gray-800/60 backdrop-blur-sm rounded-xl p-6 border border-gray-700/50 shadow-lg shadow-purple-500/10"
+      >
+        <div className="mb-6">
+          <label htmlFor="name" className="flex items-center text-gray-300 mb-2">
+            <User className="h-5 w-5 mr-2" /> Name
+          </label>
+          <input
+            type="text"
+            id="name"
+            name="name"
+            value={formData.name}
+            onChange={handleChange}
+            required
+            className="w-full p-3 rounded-lg bg-gray-900 border border-gray-700 text-white focus:outline-none focus:border-purple-500 transition-all duration-300"
+            placeholder="Your Name"
+          />
+        </div>
+        <div className="mb-6">
+          <label htmlFor="email" className="flex items-center text-gray-300 mb-2">
+            <Mail className="h-5 w-5 mr-2" /> Email
+          </label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            value={formData.email}
+            onChange={handleChange}
+            required
+            className="w-full p-3 rounded-lg bg-gray-900 border border-gray-700 text-white focus:outline-none focus:border-purple-500 transition-all duration-300"
+            placeholder="Your Email"
+          />
+        </div>
+        <div className="mb-6">
+          <label htmlFor="message" className="flex items-center text-gray-300 mb-2">
+            <MessageSquare className="h-5 w-5 mr-2" /> Message
+          </label>
+          <textarea
+            id="message"
+            name="message"
+            value={formData.message}
+            onChange={handleChange}
+            required
+            className="w-full p-3 rounded-lg bg-gray-900 border border-gray-700 text-white focus:outline-none focus:border-purple-500 transition-all duration-300 h-32 resize-none"
+            placeholder="Your Message"
+          />
+        </div>
+        <Button
+          type="submit"
+          disabled={isSubmitting}
+          className="w-full group bg-gradient-to-r from-purple-600 to-pink-600 text-white font-bold py-3 rounded-lg transition-all duration-300 hover:shadow-lg shadow-purple-500/20 flex items-center justify-center overflow-hidden relative"
+        >
           <div className="absolute inset-0 bg-gradient-to-r from-purple-700 to-pink-700 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
           <span className="relative flex items-center text-lg">
-            Start Creating Now
-            <ArrowRight className="ml-2 h-6 w-6" />
+            {isSubmitting ? "Sending..." : "Send Message"}
+            <Send className="ml-2 h-5 w-5" />
           </span>
         </Button>
-      </Link>
+      </form>
 
+      {/* Footer */}
       <footer className="mt-16 text-gray-400 text-center">
-        <p className="text-sm">
-          Made with ❤️ by Aditya Shukla
-        </p>
+        <p className="text-sm">Made with ❤️ by Aditya Shukla</p>
         <div className="flex justify-center gap-4 mt-2">
           <a
             href="https://www.linkedin.com/in/adityashukla190503/" 
@@ -165,28 +212,16 @@ function Features() {
   );
 }
 
-function FeatureCard({ icon, title, description }) {
-  return (
-    <div className="group bg-gray-800/60 backdrop-blur-sm rounded-xl p-6 border border-gray-700/50 transition-all duration-500 hover:border-purple-500/50 hover:shadow-lg hover:shadow-purple-500/20 h-full relative overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-br from-purple-600/5 to-pink-600/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-      <div className="relative">
-        <div className="mb-4 transition-transform duration-300 group-hover:translate-y-1">{icon}</div>
-        <h3 className="text-xl font-bold text-white mb-2">{title}</h3>
-        <p className="text-gray-400">{description}</p>
-      </div>
-    </div>
-  );
-}
-
-export default function FeaturesPage() {
+export default function ContactPage() {
   return (
     <>
       <Nav />
-      <Features />
+      <Contact />
     </>
   );
 }
 
+// Inject CSS animations
 if (typeof document !== "undefined") {
   const style = document.createElement("style");
   style.textContent = `

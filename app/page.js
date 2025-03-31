@@ -1,14 +1,14 @@
 "use client";
 import React, { useState, useEffect, useRef } from "react";
 import { Sparkles, Music, Video, Zap, ArrowRight, X } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { UserButton } from "@clerk/nextjs";
 import Link from "next/link";
-import Nav from "@/components/ui/Nav";
+import Nav from "./Nav";
+import { Button } from "@/components/ui/button";
 
 function Hero() {
   const [particles, setParticles] = useState([]);
-  const [showModal, setShowModal] = useState(true); // State for modal visibility
+  const [showModal, setShowModal] = useState(true); 
   const containerRef = useRef(null);
 
   // Particle generation
